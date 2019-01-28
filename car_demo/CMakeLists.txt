@@ -11,7 +11,17 @@ find_package(catkin REQUIRED COMPONENTS
   prius_msgs
 )
 
-find_package(gazebo 9 REQUIRED)
+find_package(gazebo REQUIRED)
+if(GAZEBO_MAJOR_VERSION LESS 9)
+ # build skip
+ catkin_package(
+  # INCLUDE_DIRS include
+  # LIBRARIES gazebo_radar_plugin
+  CATKIN_DEPENDS gazebo_ros prius_msgs
+ #  DEPENDS system_lib
+ )
+ 
+else()
 find_package(ignition-msgs1 REQUIRED)
 
 catkin_package(
@@ -39,6 +49,6 @@ install(TARGETS PriusHybridPlugin gazebo_ros_block_laser
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
-
+endif()
 install(DIRECTORY models DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 install(DIRECTORY worlds DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
